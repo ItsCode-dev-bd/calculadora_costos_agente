@@ -12,14 +12,14 @@ Ideal para definir cuánto deberías cobrar a tus clientes.
 
 # Tasa de cambio
 st.header("💱 Tasa de cambio")
-tasa_cop = st.number_input("Tasa actual USD a COP", value=4000.0, step=1.0)
+tasa_cop = st.number_input("Tasa actual USD a COP", value=4100.0, step=1.0)
 
 # 1. OpenAI (texto)
 st.header("1. OpenAI (GPT-4 o GPT-3.5)")
 modelo = st.selectbox("Modelo", ["GPT-3.5-turbo", "GPT-4"])
 
-tokens_entrada = st.slider("Tokens de entrada por mes (en miles)", 0, 2000, 500)
-tokens_salida = st.slider("Tokens de salida por mes (en miles)", 0, 2000, 500)
+tokens_entrada = st.slider("Tokens de entrada por mes (en miles)", 0, 2000, 20)
+tokens_salida = st.slider("Tokens de salida por mes (en miles)", 0, 2000, 20)
 
 # Conversión de tokens a mensajes aproximados
 mensajes_aprox_entrada = int((tokens_entrada * 1000) / 12)
@@ -49,7 +49,7 @@ costo_openai_voice = caracteres_voz_openai * 0.015 / 1000  # $0.015 por 1000 car
 
 # 4. Whisper (transcripción)
 st.header("4. Whisper (transcripción de audios)")
-minutos_transcripcion = st.slider("Minutos de audio a transcribir", 0, 500, 100)
+minutos_transcripcion = st.slider("Minutos de audio a transcribir", 0, 500, 30)
 costo_whisper = minutos_transcripcion * 0.006  # $0.006 por minuto
 
 # 5. Twilio (WhatsApp API)
