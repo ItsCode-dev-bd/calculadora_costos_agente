@@ -125,7 +125,8 @@ datos = {
 df = pd.DataFrame(datos)
 # Nueva columna: participación porcentual
 df["Participación (%)"] = (df["Costo (USD)"] / total_usd * 100).round(1)
-st.dataframe(df)
+st.dataframe(df, use_container_width=True, hide_index=True)
+
 
 # 
 
