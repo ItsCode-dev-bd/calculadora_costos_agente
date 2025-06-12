@@ -13,7 +13,7 @@ Ideal para definir cuánto deberías cobrar a tus clientes.
 """)
 
 st.header("💱 Tasa de cambio")
-tasa_cop = st.number_input("Tasa actual USD a COP", value=4000.0, step=1.0)
+tasa_cop = st.number_input("Tasa actual USD a COP", value=4100.0, step=1.0)
 
 
 
