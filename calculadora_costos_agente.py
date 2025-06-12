@@ -1,8 +1,27 @@
 import streamlit as st
 import pandas as pd
 
+
+from PIL import Image
+
+
 # Configuración general
 st.set_page_config(page_title="Calculadora de Costos del Agente IA", layout="centered")
+
+
+# logo = Image.open("Logo_ItsCodev7.png")  # Cambia el nombre si tu imagen tiene otro
+# st.image(logo, width=150)  # Puedes ajustar el tamaño con el parámetro width
+
+st.markdown(
+    """
+    <div style="text-align: center;">
+        <img src="https://itscode.dev/wp-content/uploads/2025/06/Logo_ItsCodev7.png" alt="Logo" width="200">
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+
 st.title("🧠 Calculadora de Costos Mensuales del Agente IA")
 
 st.markdown("""
@@ -142,4 +161,4 @@ st.caption("Calculadora para ayudarte a establecer precios rentables y justos pa
 
 # Esto puede representar ~60-70 conversaciones largas con múltiples mensajes.
 
-#run dashboard_costos_agente.py
+#streamlit run calculadora_costos_agente.py
