@@ -72,8 +72,8 @@ minutos_transcripcion = st.slider("Minutos de audio a transcribir", 0, 500, 30)
 costo_whisper = minutos_transcripcion * 0.006  # $0.006 por minuto
 
 # 5. WhatsApp API
-st.header("5. WhatsApp API (Twilio o Meta directa)")
-proveedor_whatsapp = st.radio("Proveedor de WhatsApp API", ["Twilio", "Meta API directa"])
+st.header("5. WhatsApp API")
+proveedor_whatsapp = st.radio("Proveedor de WhatsApp API", ["Twilio", "Meta API directa", "360diag (Meta BSP)"])
 
 if proveedor_whatsapp == "Twilio":
     costo_numero = st.number_input("Costo número al mes (Twilio)", value=5.0)
@@ -96,8 +96,9 @@ if proveedor_whatsapp == "Twilio":
         "Twilio mensajes (Twilio)"
     ]
 
-else:
-    st.markdown("**Nota**: Debes tener un proveedor BSP aprobado para usar la API directa de Meta.")#
+elif proveedor_whatsapp == "Meta API directa":
+    st.markdown("**Nota**: Debes tener un proveedor BSP aprobado para usar la API directa de Meta.")
+    costo_numero = st.number_input("Costo número al mes", value=0)    
     conversaciones_autenticacion = st.slider("Conversaciones de Autenticación", 0, 2000, 50)
     conversaciones_utilidad = st.slider("Conversaciones de Utilidad", 0, 2000, 100)
     conversaciones_servicio = st.slider("Conversaciones de Servicio", 0, 2000, 100)
@@ -108,7 +109,7 @@ else:
     costo_serv = conversaciones_servicio * 0.014
     costo_mark = conversaciones_marketing * 0.026
 
-    costo_whatsapp = costo_aut + costo_util + costo_serv + costo_mark
+    costo_whatsapp = costo_aut + costo_util + costo_serv + costo_mark + costo_numero
 
     detalle_wa = [
         round(costo_aut, 2),
@@ -122,6 +123,36 @@ else:
         "Meta Servicio", 
         "Meta Marketing"
     ]
+
+elif proveedor_whatsapp == "360diag (Meta BSP)":
+    st.markdown("**360diag** es un BSP aprobado por Meta que ofrece precios personalizados.")
+    costo_numero = st.number_input("Costo número al mes", value=0)        
+    conversaciones_autenticacion = st.slider("Conversaciones de Autenticación (360diag)", 0, 2000, 50)
+    conversaciones_utilidad = st.slider("Conversaciones de Utilidad (360diag)", 0, 2000, 100)
+    conversaciones_servicio = st.slider("Conversaciones de Servicio (360diag)", 0, 2000, 100)
+    conversaciones_marketing = st.slider("Conversaciones de Marketing (360diag)", 0, 2000, 50)
+
+    # Ajusta aquí las tarifas específicas de 360diag si son diferentes
+    costo_aut = conversaciones_autenticacion * 0.015
+    costo_util = conversaciones_utilidad * 0.011
+    costo_serv = conversaciones_servicio * 0.011
+    costo_mark = conversaciones_marketing * 0.023
+
+    costo_whatsapp = costo_aut + costo_util + costo_serv + costo_mark + costo_numero
+
+    detalle_wa = [
+        round(costo_aut, 2),
+        round(costo_util, 2),
+        round(costo_serv, 2),
+        round(costo_mark, 2)
+    ]
+    conceptos_wa = [
+        "360diag Auth (verificación)", 
+        "360diag Utilidad", 
+        "360diag Servicio", 
+        "360diag Marketing"
+    ]
+
 
 # 6. Render
 st.header("6. Render (hosting backend)")
@@ -141,7 +172,7 @@ total_usd = (
     costo_elevenlabs +
     costo_openai_voice +
     costo_whisper +
-    detalle_wa, +
+    costo_whatsapp +
     costo_render +
     costo_mysql +
     costo_extra
@@ -153,32 +184,40 @@ st.subheader("💰 Resumen de costos")
 st.metric("Costo mensual total (USD)", f"${total_usd:.2f}")
 st.metric("Costo mensual total (COP)", f"${total_cop:,.0f} COP")
 
-# Mostrar desglose
+# Construcción dinámica del desglose final
+conceptos_generales = [
+    "OpenAI entrada (texto)", 
+    "OpenAI salida (texto)", 
+    "ElevenLabs (voz)", 
+    "OpenAI TTS (voz)", 
+    "Whisper (transcripción)"
+]
+
+costos_generales = [
+    round(costo_entrada, 2), 
+    round(costo_salida, 2), 
+    round(costo_elevenlabs, 2),
+    round(costo_openai_voice, 2),
+    round(costo_whisper, 2)
+]
+
+# Combinar conceptos generales + WhatsApp + infraestructura
+conceptos_totales = (
+    conceptos_generales + 
+    conceptos_wa + 
+    ["Render", "Base de datos", "Otros"]
+)
+
+costos_totales = (
+    costos_generales + 
+    detalle_wa + 
+    [round(costo_render, 2), round(costo_mysql, 2), round(costo_extra, 2)]
+)
+
+# Crear DataFrame final
 datos = {
-    "Concepto": [
-        "OpenAI entrada (texto)", 
-        "OpenAI salida (texto)", 
-        "ElevenLabs (voz)", 
-        "OpenAI TTS (voz)", 
-        "Whisper (transcripción)", 
-        conceptos_wa,
-        "Render", 
-        "Base de datos", 
-        "Otros"
-    ],
-    "Costo (USD)": [
-        round(costo_entrada, 2), 
-        round(costo_salida, 2), 
-        round(costo_elevenlabs, 2),
-        round(costo_openai_voice, 2),
-        round(costo_whisper, 2),
-        round(costo_numero, 2),
-        round(costo_conversaciones, 2),
-        round(costo_mensajes, 2),
-        round(costo_render, 2),
-        round(costo_mysql, 2),
-        round(costo_extra, 2)
-    ]
+    "Concepto": conceptos_totales,
+    "Costo (USD)": costos_totales
 }
 df = pd.DataFrame(datos)
 # Nueva columna: participación porcentual
