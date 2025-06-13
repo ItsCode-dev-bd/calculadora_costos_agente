@@ -141,7 +141,7 @@ total_usd = (
     costo_elevenlabs +
     costo_openai_voice +
     costo_whisper +
-    costo_twilio +
+    detalle_wa, +
     costo_render +
     costo_mysql +
     costo_extra
@@ -161,9 +161,7 @@ datos = {
         "ElevenLabs (voz)", 
         "OpenAI TTS (voz)", 
         "Whisper (transcripción)", 
-        "Twilio número fijo", 
-        "Twilio conversaciones (Meta)",
-        "Twilio mensajes (Twilio)",
+        conceptos_wa,
         "Render", 
         "Base de datos", 
         "Otros"
