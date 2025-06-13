@@ -97,7 +97,7 @@ if proveedor_whatsapp == "Twilio":
     ]
 
 else:
-    st.markdown("**Nota**: Debes tener un proveedor BSP aprobado para usar la API directa de Meta.")
+    st.markdown("**Nota**: Debes tener un proveedor BSP aprobado para usar la API directa de Meta.")#
     conversaciones_autenticacion = st.slider("Conversaciones de Autenticación", 0, 2000, 50)
     conversaciones_utilidad = st.slider("Conversaciones de Utilidad", 0, 2000, 100)
     conversaciones_servicio = st.slider("Conversaciones de Servicio", 0, 2000, 100)
