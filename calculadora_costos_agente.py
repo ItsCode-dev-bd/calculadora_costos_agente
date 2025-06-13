@@ -112,12 +112,14 @@ elif proveedor_whatsapp == "Meta API directa":##
     costo_whatsapp = costo_aut + costo_util + costo_serv + costo_mark + costo_numero
 
     detalle_wa = [
+        round(costo_numero, 2),        
         round(costo_aut, 2),
         round(costo_util, 2),
         round(costo_serv, 2),
         round(costo_mark, 2)
     ]
     conceptos_wa = [
+        "Meta número fijo",         
         "Meta Auth (verificación)", 
         "Meta Utilidad", 
         "Meta Servicio", 
@@ -125,8 +127,8 @@ elif proveedor_whatsapp == "Meta API directa":##
     ]
 
 elif proveedor_whatsapp == "360diag (Meta BSP)":
-    st.markdown("**360diag** es un BSP aprobado por Meta que ofrece precios personalizados.")
-    costo_numero = st.number_input("Costo número al mes", value=0)        
+    st.markdown("**360diag** es un BSP aprobado por Meta que ofrece un plan regular de 49 usd a esto hay que sumarle el cobro por parte de meta generado por cada mensaje.")
+    costo_numero = st.number_input("Costo número al mes", value=49)        
     conversaciones_autenticacion = st.slider("Conversaciones de Autenticación (360diag)", 0, 2000, 50)
     conversaciones_utilidad = st.slider("Conversaciones de Utilidad (360diag)", 0, 2000, 100)
     conversaciones_servicio = st.slider("Conversaciones de Servicio (360diag)", 0, 2000, 100)
@@ -141,12 +143,14 @@ elif proveedor_whatsapp == "360diag (Meta BSP)":
     costo_whatsapp = costo_aut + costo_util + costo_serv + costo_mark + costo_numero
 
     detalle_wa = [
+        round(costo_numero, 2),        
         round(costo_aut, 2),
         round(costo_util, 2),
         round(costo_serv, 2),
         round(costo_mark, 2)
     ]
     conceptos_wa = [
+        "360diag Plan regular",      
         "360diag Auth (verificación)", 
         "360diag Utilidad", 
         "360diag Servicio", 
