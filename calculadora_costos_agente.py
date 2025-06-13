@@ -71,16 +71,57 @@ st.header("4. Whisper (transcripción de audios)")
 minutos_transcripcion = st.slider("Minutos de audio a transcribir", 0, 500, 30)
 costo_whisper = minutos_transcripcion * 0.006  # $0.006 por minuto
 
-# 5. Twilio (WhatsApp API)
-st.header("5. Twilio (WhatsApp API)")
-costo_numero = st.number_input("Costo número al mes", value=5.0)
-conversaciones = st.slider("Conversaciones (ventanas de 24h) al mes", 0, 5000, 300)
-mensajes_por_conversacion = st.slider("Mensajes promedio por conversación", 1, 100, 10)
+# 5. WhatsApp API
+st.header("5. WhatsApp API (Twilio o Meta directa)")
+proveedor_whatsapp = st.radio("Proveedor de WhatsApp API", ["Twilio", "Meta API directa"])
 
-costo_conversaciones = conversaciones * 0.0009 
-mensajes_totales = conversaciones * mensajes_por_conversacion
-costo_mensajes = mensajes_totales * 0.005
-costo_twilio = costo_numero + costo_conversaciones + costo_mensajes
+if proveedor_whatsapp == "Twilio":
+    costo_numero = st.number_input("Costo número al mes (Twilio)", value=5.0)
+    conversaciones = st.slider("Conversaciones (ventanas de 24h) al mes", 0, 5000, 300)
+    mensajes_por_conversacion = st.slider("Mensajes promedio por conversación", 1, 100, 10)
+
+    costo_conversaciones = conversaciones * 0.0009 
+    mensajes_totales = conversaciones * mensajes_por_conversacion
+    costo_mensajes = mensajes_totales * 0.005
+    costo_whatsapp = costo_numero + costo_conversaciones + costo_mensajes
+
+    detalle_wa = [
+        round(costo_numero, 2),
+        round(costo_conversaciones, 2),
+        round(costo_mensajes, 2)
+    ]
+    conceptos_wa = [
+        "Twilio número fijo", 
+        "Twilio conversaciones (Meta)", 
+        "Twilio mensajes (Twilio)"
+    ]
+
+else:
+    st.markdown("**Nota**: Debes tener un proveedor BSP aprobado para usar la API directa de Meta.")
+    conversaciones_autenticacion = st.slider("Conversaciones de Autenticación", 0, 2000, 50)
+    conversaciones_utilidad = st.slider("Conversaciones de Utilidad", 0, 2000, 100)
+    conversaciones_servicio = st.slider("Conversaciones de Servicio", 0, 2000, 100)
+    conversaciones_marketing = st.slider("Conversaciones de Marketing", 0, 2000, 50)
+
+    costo_aut = conversaciones_autenticacion * 0.018
+    costo_util = conversaciones_utilidad * 0.014
+    costo_serv = conversaciones_servicio * 0.014
+    costo_mark = conversaciones_marketing * 0.026
+
+    costo_whatsapp = costo_aut + costo_util + costo_serv + costo_mark
+
+    detalle_wa = [
+        round(costo_aut, 2),
+        round(costo_util, 2),
+        round(costo_serv, 2),
+        round(costo_mark, 2)
+    ]
+    conceptos_wa = [
+        "Meta Auth (verificación)", 
+        "Meta Utilidad", 
+        "Meta Servicio", 
+        "Meta Marketing"
+    ]
 
 # 6. Render
 st.header("6. Render (hosting backend)")
