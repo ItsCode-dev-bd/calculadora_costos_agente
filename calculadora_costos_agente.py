@@ -96,7 +96,7 @@ if proveedor_whatsapp == "Twilio":
         "Twilio mensajes (Twilio)"
     ]
 
-elif proveedor_whatsapp == "Meta API directa":
+elif proveedor_whatsapp == "Meta API directa":##
     st.markdown("**Nota**: Debes tener un proveedor BSP aprobado para usar la API directa de Meta.")
     costo_numero = st.number_input("Costo número al mes", value=0)    
     conversaciones_autenticacion = st.slider("Conversaciones de Autenticación", 0, 2000, 50)
