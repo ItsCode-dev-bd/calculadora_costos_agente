@@ -213,7 +213,7 @@ elif plan_cliente == "Pro":
 if plan_cliente != "Ninguno":
     st.markdown(f"🔹 **Caracteres generados:** {caracteres_generados:,}")
     st.markdown(f"🔹 **Exceso:** {exceso_caracteres:,} caracteres")
-    st.markdown(f"🔹 **Costo adicional por exceso:** ${costo_exceso_texto:.2f} USD")
+    st.markdown(f"🔹 **Costo adicional por exceso:** ${costo_exceso_texto:.2f} USD")#
 
 
 # Calcular totales
