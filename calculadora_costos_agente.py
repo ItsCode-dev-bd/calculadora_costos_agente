@@ -26,15 +26,17 @@ st.header("💱 Tasa de cambio")
 tasa_cop = st.number_input("Tasa actual USD a COP", value=4100.0, step=1.0)
 
 # 1. OpenAI (texto)
-st.header("1. OpenAI (Texto)")
-modelos_openai = {
-    "GPT-3.5-turbo": {"entrada": 0.0015, "salida": 0.002},
-    "GPT-3.5-turbo-1106": {"entrada": 0.0010, "salida": 0.002},
-    "GPT-4": {"entrada": 0.03, "salida": 0.06},
-    "GPT-4-turbo": {"entrada": 0.01, "salida": 0.03}#
+st.header("1. OpenAI (GPT-4 o GPT-3.5)")
+modelo = st.selectbox("Modelo", ["GPT-3.5-turbo", "GPT-3.5-turbo-1106", "GPT-4", "GPT-4-turbo"])
+
+limites_contexto = {
+    "GPT-3.5-turbo": 4096,
+    "GPT-3.5-turbo-1106": 16385,
+    "GPT-4": 8192,
+    "GPT-4-turbo": 128000
 }
 
-modelo = st.selectbox("Modelo OpenAI", list(modelos_openai.keys()))
+st.markdown(f"🔹 Límite de contexto: **{limites_contexto[modelo]:,} tokens** (entrada + salida por mensaje)")
 
 tokens_entrada = st.slider("Tokens de entrada por mes (en miles)", 0, 2000, 20)
 tokens_salida = st.slider("Tokens de salida por mes (en miles)", 0, 2000, 40)
@@ -45,8 +47,19 @@ mensajes_aprox_salida = int((tokens_salida * 1000) / 25)
 st.markdown(f"🔹 Aproximadamente **{mensajes_aprox_entrada:,} mensajes de entrada** por mes.")
 st.markdown(f"🔹 Aproximadamente **{mensajes_aprox_salida:,} mensajes de salida** generados por la IA.")
 
-costo_entrada = tokens_entrada * modelos_openai[modelo]["entrada"]
-costo_salida = tokens_salida * modelos_openai[modelo]["salida"]
+if modelo == "GPT-3.5-turbo":
+    costo_entrada = tokens_entrada * 0.0015
+    costo_salida = tokens_salida * 0.002
+elif modelo == "GPT-3.5-turbo-1106":
+    costo_entrada = tokens_entrada * 0.0010
+    costo_salida = tokens_salida * 0.002
+elif modelo == "GPT-4":
+    costo_entrada = tokens_entrada * 0.03
+    costo_salida = tokens_salida * 0.06
+elif modelo == "GPT-4-turbo":
+    costo_entrada = tokens_entrada * 0.01
+    costo_salida = tokens_salida * 0.03
+
 costo_openai = costo_entrada + costo_salida
 
 # 2. ElevenLabs (voz IA)
