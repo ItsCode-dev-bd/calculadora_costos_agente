@@ -35,6 +35,14 @@ limites_contexto = {
     "GPT-4": 8192,
     "GPT-4-turbo": 128000
 }
+st.markdown("""
+| Modelo                   | Límite de tokens | ≈ Caracteres (español) |
+|--------------------------|------------------|-------------------------|
+| GPT-3.5-turbo            | 4,096 tokens     | ~14,336 caracteres      |
+| GPT-3.5-turbo-1106       | 16,385 tokens    | ~57,348 caracteres      |
+| GPT-4                    | 8,192 tokens     | ~28,672 caracteres      |
+| GPT-4-turbo              | 128,000 tokens   | ~448,000 caracteres     |
+""", unsafe_allow_html=True)
 
 st.markdown(f"🔹 Límite de contexto: **{limites_contexto[modelo]:,} tokens** (entrada + salida por mensaje)")
 
