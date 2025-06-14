@@ -30,7 +30,7 @@ st.header("1. OpenAI (GPT-4 o GPT-3.5)")
 modelo = st.selectbox("Modelo", ["GPT-3.5-turbo", "GPT-4"])
 
 tokens_entrada = st.slider("Tokens de entrada por mes (en miles)", 0, 2000, 20)
-tokens_salida = st.slider("Tokens de salida por mes (en miles)", 0, 2000, 20)
+tokens_salida = st.slider("Tokens de salida por mes (en miles)", 0, 2000, 40)
 
 mensajes_aprox_entrada = int((tokens_entrada * 1000) / 12)
 mensajes_aprox_salida = int((tokens_salida * 1000) / 25)
@@ -49,7 +49,7 @@ costo_openai = costo_entrada + costo_salida
 
 # 2. ElevenLabs (voz IA)
 st.header("2. ElevenLabs (voz IA)")
-st.markdown("1,000 caracteres de texto ≈ 1–1.2 minutos de audio")
+st.markdown("1,000 caracteres de texto ≈ 1 minuto de audio")
 st.markdown("Plan Starter $0.30 por cada 1,000 caracteres extra")
 st.markdown("Plan Creator $0.24 por cada 1,000 caracteres extra")
 st.markdown("Plan Independent $0.20 por cada 1,000 caracteres extra")
@@ -81,13 +81,14 @@ else:
 
 # 3. OpenAI TTS (voz)
 st.header("3. OpenAI TTS (voz IA)")
-st.markdown("1,000 caracteres de texto ≈ 1–1.2 minutos de audio")
+st.markdown("1,000 caracteres de texto ≈ 1 minutos de audio")
+st.markdown("100,000 caracteres de texto ≈ 1.4 h (100 min)")
 caracteres_voz_openai = st.slider("Caracteres de texto convertidos a voz", 0, 500_000, 100_000)
 costo_openai_voice = caracteres_voz_openai * 0.015 / 1000
 
 # 4. Whisper (transcripción)
 st.header("4. Whisper (transcripción de audios)")
-minutos_transcripcion = st.slider("Minutos de audio a transcribir", 0, 500, 30)
+minutos_transcripcion = st.slider("Minutos de audio a transcribir", 0, 500, 60)
 costo_whisper = minutos_transcripcion * 0.006
 
 # 5. WhatsApp API
@@ -97,7 +98,7 @@ proveedor_whatsapp = st.radio("Proveedor de WhatsApp API", ["Twilio", "Meta API 
 if proveedor_whatsapp == "Twilio":
     costo_numero = st.number_input("Costo número al mes (Twilio)", value=5.0)
     conversaciones = st.slider("Conversaciones (ventanas de 24h) al mes", 0, 5000, 300)
-    mensajes_por_conversacion = st.slider("Mensajes promedio por conversación", 1, 100, 10)
+    mensajes_por_conversacion = st.slider("Mensajes promedio por conversación", 1, 100, 25)
 
     costo_conversaciones = conversaciones * 0.0009 
     mensajes_totales = conversaciones * mensajes_por_conversacion
@@ -176,11 +177,11 @@ elif proveedor_whatsapp == "360diag (Meta BSP)":
     ]
 
 # 6. Render
-st.header("6. Render (hosting backend)")
-costo_render = st.number_input("Costo mensual en Render", value=5)
+st.header("6. Servidor (alojamiento)")
+costo_render = st.number_input("Costo mensual servidor", value=5)
 
 # 7. Base de datos
-st.header("7. Base de datos MySQL (ej. Hostinger)")
+st.header("7. Base de datos MySQL")
 costo_mysql = st.number_input("Costo mensual base de datos", value=0)
 
 # 8. Extras
