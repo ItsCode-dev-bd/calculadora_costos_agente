@@ -27,14 +27,14 @@ tasa_cop = st.number_input("Tasa actual USD a COP", value=4100.0, step=1.0)
 
 # 1. OpenAI (texto)
 st.header("1. OpenAI (Modelo)")
-modelo = st.selectbox("Modelo", ["GPT-3.5-turbo", "GPT-3.5-turbo-1106", "GPT-4", "GPT-4-turbo", "gpt-4o"])
+modelo = st.selectbox("Modelo", ["GPT-3.5-turbo", "GPT-3.5-turbo-1106", "GPT-4", "GPT-4-turbo", "GPT-4o"])
 
 limites_contexto = {
-    "gpt-3.5-turbo": 4096,
-    "gpt-3.5-turbo-1106": 16385,
-    "gpt-4": 8192,
-    "gpt-4-turbo": 128000,
-    "gpt-4o": 128000
+    "GPT-3.5-turbo": 4096,
+    "GPT-3.5-turbo-1106": 16385,
+    "GPT-4": 8192,
+    "GPT-4-turbo": 128000,
+    "GPT-4o": 128000
 }
 st.markdown("""
 | Modelo                   | Límite de tokens | ≈ Caracteres (español) |
@@ -76,7 +76,7 @@ elif modelo == "GPT-4":
 elif modelo == "GPT-4-turbo":
     costo_entrada = tokens_entrada * 0.01
     costo_salida = tokens_salida * 0.03    
-elif modelo == "gpt-4o":
+elif modelo == "GPT-4o":
     costo_entrada = tokens_entrada * 0.005
     costo_salida = tokens_salida * 0.015    
 
