@@ -45,7 +45,7 @@ st.markdown("""
 | GPT-4-turbo              | 128,000 tokens   | ~448,000 caracteres     |
 | GPT-4o                   | 128,000 tokens   | ~448,000 caracteres     |
 """, unsafe_allow_html=True)
-
+#
 st.markdown(f"🔹 Límite de contexto: **{limites_contexto[modelo]:,} tokens** (entrada + salida por mensaje)")
 
 tokens_entrada = st.slider("Tokens totales de entrada por mes (en miles)", 0, 2000, 100)
