@@ -140,17 +140,17 @@ if proveedor_whatsapp == "Twilio":
     ]
 
 elif proveedor_whatsapp == "Meta API directa":
-    st.markdown("**Nota**: Debes tener un proveedor BSP aprobado para usar la API directa de Meta.")
+    # st.markdown("**Nota**: Debes tener un proveedor BSP aprobado para usar la API directa de Meta.")
     costo_numero = st.number_input("Costo número al mes", value=0)    
     conversaciones_autenticacion = st.slider("Conversaciones de Autenticación", 0, 2000, 50)
     conversaciones_utilidad = st.slider("Conversaciones de Utilidad", 0, 2000, 100)
-    conversaciones_servicio = st.slider("Conversaciones de Servicio", 0, 2000, 100)
+    conversaciones_servicio = st.slider("Conversaciones de Servicio", 0, 2000, 0)
     conversaciones_marketing = st.slider("Conversaciones de Marketing", 0, 2000, 50)
 
-    costo_aut = conversaciones_autenticacion * 0.018
-    costo_util = conversaciones_utilidad * 0.014
-    costo_serv = conversaciones_servicio * 0.014
-    costo_mark = conversaciones_marketing * 0.026
+    costo_aut = conversaciones_autenticacion * 0.0002
+    costo_util = conversaciones_utilidad * 0.0002
+    costo_serv = conversaciones_servicio * 0
+    costo_mark = conversaciones_marketing * 0.0125
 
     costo_whatsapp = costo_aut + costo_util + costo_serv + costo_mark + costo_numero
 
@@ -174,13 +174,13 @@ elif proveedor_whatsapp == "360diag (Meta BSP)":
     costo_numero = st.number_input("Costo número al mes", value=49)        
     conversaciones_autenticacion = st.slider("Conversaciones de Autenticación (360diag)", 0, 2000, 50)
     conversaciones_utilidad = st.slider("Conversaciones de Utilidad (360diag)", 0, 2000, 100)
-    conversaciones_servicio = st.slider("Conversaciones de Servicio (360diag)", 0, 2000, 100)
+    conversaciones_servicio = st.slider("Conversaciones de Servicio (360diag)", 0, 2000, 0)
     conversaciones_marketing = st.slider("Conversaciones de Marketing (360diag)", 0, 2000, 50)
 
-    costo_aut = conversaciones_autenticacion * 0.015
-    costo_util = conversaciones_utilidad * 0.011
-    costo_serv = conversaciones_servicio * 0.011
-    costo_mark = conversaciones_marketing * 0.023
+    costo_aut = conversaciones_autenticacion * 0.0002
+    costo_util = conversaciones_utilidad * 0.0002
+    costo_serv = conversaciones_servicio * 0
+    costo_mark = conversaciones_marketing * 0.0125
 
     costo_whatsapp = costo_aut + costo_util + costo_serv + costo_mark + costo_numero
 
