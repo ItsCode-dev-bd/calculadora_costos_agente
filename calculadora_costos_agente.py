@@ -61,24 +61,9 @@ PROMEDIO_TOKENS_SALIDA = 150
 mensajes_aprox_entrada = int((tokens_entrada * 1000) / PROMEDIO_TOKENS_ENTRADA)
 mensajes_aprox_salida = int((tokens_salida * 1000) / PROMEDIO_TOKENS_SALIDA)
 
-costos_por_modelo = {
-    "GPT-3.5-turbo": {"input": 0.0015, "output": 0.002},
-    "GPT-3.5-turbo-1106": {"input": 0.0010, "output": 0.002},
-    "GPT-4": {"input": 0.03, "output": 0.06},
-    "GPT-4-turbo": {"input": 0.01, "output": 0.03}
-}
-#
-# Calcular costos
-costo_entrada = tokens_entrada * costos_por_modelo[modelo]["input"]
-costo_salida = tokens_salida * costos_por_modelo[modelo]["output"]
-costo_total = costo_entrada + costo_salida
-
 st.markdown(f"🔸 Aproximadamente **{mensajes_aprox_entrada:,} mensajes de entrada** al mes (usuario escribe).")
 st.markdown(f"🔸 Aproximadamente **{mensajes_aprox_salida:,} mensajes de salida** al mes (respuesta de IA).")
-st.markdown("---")
-st.markdown(f"💰 **Costo por tokens de entrada:** ${costo_entrada:.4f} USD")
-st.markdown(f"💰 **Costo por tokens de salida:** ${costo_salida:.4f} USD")
-st.markdown(f"💵 **Costo mensual estimado total:** **${costo_total:.4f} USD**")
+
 if modelo == "GPT-3.5-turbo":
     costo_entrada = tokens_entrada * 0.0015
     costo_salida = tokens_salida * 0.002
