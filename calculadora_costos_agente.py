@@ -67,7 +67,7 @@ costos_por_modelo = {
     "GPT-4": {"input": 0.03, "output": 0.06},
     "GPT-4-turbo": {"input": 0.01, "output": 0.03}
 }
-
+#
 # Calcular costos
 costo_entrada = tokens_entrada * costos_por_modelo[modelo]["input"]
 costo_salida = tokens_salida * costos_por_modelo[modelo]["output"]
