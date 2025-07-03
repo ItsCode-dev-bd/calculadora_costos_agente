@@ -30,10 +30,11 @@ st.header("1. OpenAI (GPT-4 o GPT-3.5)")
 modelo = st.selectbox("Modelo", ["GPT-3.5-turbo", "GPT-3.5-turbo-1106", "GPT-4", "GPT-4-turbo"])
 
 limites_contexto = {
-    "GPT-3.5-turbo": 4096,
-    "GPT-3.5-turbo-1106": 16385,
-    "GPT-4": 8192,
-    "GPT-4-turbo": 128000
+    "gpt-3.5-turbo": 4096,
+    "gpt-3.5-turbo-1106": 16385,
+    "gpt-4": 8192,
+    "gpt-4-turbo": 128000,
+    "gpt-4o": 128000
 }
 st.markdown("""
 | Modelo                   | Límite de tokens | ≈ Caracteres (español) |
@@ -42,19 +43,42 @@ st.markdown("""
 | GPT-3.5-turbo-1106       | 16,385 tokens    | ~57,348 caracteres      |
 | GPT-4                    | 8,192 tokens     | ~28,672 caracteres      |
 | GPT-4-turbo              | 128,000 tokens   | ~448,000 caracteres     |
+| GPT-4o                   | 128,000 tokens   | ~448,000 caracteres     |
 """, unsafe_allow_html=True)
 
 st.markdown(f"🔹 Límite de contexto: **{limites_contexto[modelo]:,} tokens** (entrada + salida por mensaje)")
 
-tokens_entrada = st.slider("Tokens de entrada por mes (en miles)", 0, 2000, 20)
-tokens_salida = st.slider("Tokens de salida por mes (en miles)", 0, 2000, 40)
+tokens_entrada = st.slider("Tokens totales de entrada por mes (en miles)", 0, 2000, 100)
+tokens_salida = st.slider("Tokens totales de salida por mes (en miles)", 0, 2000, 200)
 
-mensajes_aprox_entrada = int((tokens_entrada * 1000) / 12)
-mensajes_aprox_salida = int((tokens_salida * 1000) / 25)
+# Entrada promedio (usuario): 20 a 50 tokens.
 
-st.markdown(f"🔹 Aproximadamente **{mensajes_aprox_entrada:,} mensajes de entrada** por mes.")
-st.markdown(f"🔹 Aproximadamente **{mensajes_aprox_salida:,} mensajes de salida** generados por la IA.")
+# Respuesta promedio (IA): 100 a 300 tokens.
 
+PROMEDIO_TOKENS_ENTRADA = 30
+PROMEDIO_TOKENS_SALIDA = 150
+
+mensajes_aprox_entrada = int((tokens_entrada * 1000) / PROMEDIO_TOKENS_ENTRADA)
+mensajes_aprox_salida = int((tokens_salida * 1000) / PROMEDIO_TOKENS_SALIDA)
+
+costos_por_modelo = {
+    "GPT-3.5-turbo": {"input": 0.0015, "output": 0.002},
+    "GPT-3.5-turbo-1106": {"input": 0.0010, "output": 0.002},
+    "GPT-4": {"input": 0.03, "output": 0.06},
+    "GPT-4-turbo": {"input": 0.01, "output": 0.03}
+}
+
+# Calcular costos
+costo_entrada = tokens_entrada * costos_por_modelo[modelo]["input"]
+costo_salida = tokens_salida * costos_por_modelo[modelo]["output"]
+costo_total = costo_entrada + costo_salida
+
+st.markdown(f"🔸 Aproximadamente **{mensajes_aprox_entrada:,} mensajes de entrada** al mes (usuario escribe).")
+st.markdown(f"🔸 Aproximadamente **{mensajes_aprox_salida:,} mensajes de salida** al mes (respuesta de IA).")
+st.markdown("---")
+st.markdown(f"💰 **Costo por tokens de entrada:** ${costo_entrada:.4f} USD")
+st.markdown(f"💰 **Costo por tokens de salida:** ${costo_salida:.4f} USD")
+st.markdown(f"💵 **Costo mensual estimado total:** **${costo_total:.4f} USD**")
 if modelo == "GPT-3.5-turbo":
     costo_entrada = tokens_entrada * 0.0015
     costo_salida = tokens_salida * 0.002
@@ -66,7 +90,10 @@ elif modelo == "GPT-4":
     costo_salida = tokens_salida * 0.06
 elif modelo == "GPT-4-turbo":
     costo_entrada = tokens_entrada * 0.01
-    costo_salida = tokens_salida * 0.03
+    costo_salida = tokens_salida * 0.03    
+elif modelo == "gpt-4o":
+    costo_entrada = tokens_entrada * 0.005
+    costo_salida = tokens_salida * 0.015    
 
 costo_openai = costo_entrada + costo_salida
 
