@@ -26,7 +26,7 @@ st.header("💱 Tasa de cambio")
 tasa_cop = st.number_input("Tasa actual USD a COP", value=4100.0, step=1.0)
 
 # 1. OpenAI (texto)
-st.header("1. OpenAI (GPT-4 o GPT-3.5)")
+st.header("1. OpenAI (Modelo)")
 modelo = st.selectbox("Modelo", ["GPT-3.5-turbo", "GPT-3.5-turbo-1106", "GPT-4", "GPT-4-turbo", "gpt-4o"])
 
 limites_contexto = {
