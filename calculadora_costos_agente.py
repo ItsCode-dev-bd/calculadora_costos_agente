@@ -27,23 +27,33 @@ tasa_cop = st.number_input("Tasa actual USD a COP", value=4100.0, step=1.0)
 
 # 1. OpenAI (texto)
 st.header("1. OpenAI (Modelo)")
-modelo = st.selectbox("Modelo", ["GPT-3.5-turbo", "GPT-3.5-turbo-1106", "GPT-4", "GPT-4-turbo", "GPT-4o"])
+# 📌 Selector de modelo actualizado con opciones más relevantes y rentables
+modelo = st.selectbox("Modelo", [
+    "GPT-3.5-turbo",
+    "GPT-4o",
+    "GPT-4o-mini",
+    "GPT-5-mini",
+    "GPT-5-nano"
+])
 
+# 📌 Límites de contexto actualizados
 limites_contexto = {
-    "GPT-3.5-turbo": 4096,
-    "GPT-3.5-turbo-1106": 16385,
-    "GPT-4": 8192,
-    "GPT-4-turbo": 128000,
-    "GPT-4o": 128000
+    "GPT-3.5-turbo": 16385,       # unificado, antes 3.5-turbo-1106
+    "GPT-4o": 128000,
+    "GPT-4o-mini": 128000,
+    "GPT-5-mini": 1000000,
+    "GPT-5-nano": 1000000
 }
+
+# 📌 Tabla de referencia de precios (USD por 1K tokens)
 st.markdown("""
-| Modelo                | Límite de tokens | ≈ Caracteres (español) | Costo entrada (por 1K tokens) | Costo salida (por 1K tokens) |
-|------------------------|------------------|-------------------------|-------------------------------|------------------------------|
-| GPT-3.5-turbo          | 4,096 tokens     | ~14,336 caracteres      | $0.0015                       | $0.0020                      |
-| GPT-3.5-turbo-1106     | 16,385 tokens    | ~57,348 caracteres      | $0.0010                       | $0.0020                      |
-| GPT-4                  | 8,192 tokens     | ~28,672 caracteres      | $0.0300                       | $0.0600                      |
-| GPT-4-turbo            | 128,000 tokens   | ~448,000 caracteres     | $0.0100                       | $0.0300                      |
-| GPT-4o                 | 128,000 tokens   | ~448,000 caracteres     | $0.0050                       | $0.0150                      |
+| Modelo        | Límite de tokens | ≈ Caracteres (español) | Costo entrada (por 1K tokens) | Costo salida (por 1K tokens) |
+|---------------|------------------|------------------------|-------------------------------|------------------------------|
+| GPT-3.5-turbo | 16,385 tokens    | ~57,348 caracteres     | $0.0005                        | $0.0015                      |
+| GPT-4o        | 128,000 tokens   | ~448,000 caracteres    | $0.0025                        | $0.0100                      |
+| GPT-4o-mini   | 128,000 tokens   | ~448,000 caracteres    | $0.00015                       | $0.00060                     |
+| GPT-5-mini    | 1,000,000 tokens | ~3,500,000 caracteres  | $0.00025                       | $0.0020                      |
+| GPT-5-nano    | 1,000,000 tokens | ~3,500,000 caracteres  | $0.00005                       | $0.00040                     |
 """, unsafe_allow_html=True)
 
 #
@@ -65,21 +75,22 @@ mensajes_aprox_salida = int((tokens_salida * 1000) / PROMEDIO_TOKENS_SALIDA)
 st.markdown(f"🔸 Aproximadamente **{mensajes_aprox_entrada:,} mensajes de entrada** al mes (usuario escribe).")
 st.markdown(f"🔸 Aproximadamente **{mensajes_aprox_salida:,} mensajes de salida** al mes (respuesta de IA).")
 
+# 📌 Cálculo dinámico de costos
 if modelo == "GPT-3.5-turbo":
-    costo_entrada = tokens_entrada * 0.0015
-    costo_salida = tokens_salida * 0.002
-elif modelo == "GPT-3.5-turbo-1106":
-    costo_entrada = tokens_entrada * 0.0010
-    costo_salida = tokens_salida * 0.002
-elif modelo == "GPT-4":
-    costo_entrada = tokens_entrada * 0.03
-    costo_salida = tokens_salida * 0.06
-elif modelo == "GPT-4-turbo":
-    costo_entrada = tokens_entrada * 0.01
-    costo_salida = tokens_salida * 0.03    
+    costo_entrada = tokens_entrada * 0.0005
+    costo_salida = tokens_salida * 0.0015
 elif modelo == "GPT-4o":
-    costo_entrada = tokens_entrada * 0.005
-    costo_salida = tokens_salida * 0.015    
+    costo_entrada = tokens_entrada * 0.0025
+    costo_salida = tokens_salida * 0.0100
+elif modelo == "GPT-4o-mini":
+    costo_entrada = tokens_entrada * 0.00015
+    costo_salida = tokens_salida * 0.00060
+elif modelo == "GPT-5-mini":
+    costo_entrada = tokens_entrada * 0.00025
+    costo_salida = tokens_salida * 0.0020
+elif modelo == "GPT-5-nano":
+    costo_entrada = tokens_entrada * 0.00005
+    costo_salida = tokens_salida * 0.00040
 
 costo_openai = costo_entrada + costo_salida
 
